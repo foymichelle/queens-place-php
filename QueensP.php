@@ -49,18 +49,67 @@ class QueensP {
         }
 
         // Check diagonals for given point
-        for ($i = 0; $i < $this->size; $i++) {
+        // North-East
+        $row_i = $row-1;
+        $col_i = $col+1;
+        while ($row_i > -1 and $col_i < 8) {
+            if ($this->board[$row_i][$col_i] === 1) {
+                return false;
+            }
+            $row_i--;
+            $col_i++;
+        }
 
+        // North-West
+        $row_i = $row-1;
+        $col_i = $col-1;
+        while ($row_i > -1 and $col_i > -1) {
+            if ($this->board[$row_i][$col_i] === 1) {
+                return false;
+            }
+            $row_i--;
+            $col_i--;
+        }
+
+        // South-East
+        $row_i = $row+1;
+        $col_i = $col+1;
+        while ($row_i < 8 and $col_i < 8) {
+            if ($this->board[$row_i][$col_i] === 1) {
+                return false;
+            }
+            $row_i++;
+            $col_i++;
+        }
+
+        // South-West
+        $row_i = $row+1;
+        $col_i = $col-1;
+        while ($row_i < 8 and $col_i > -1) {
+            if ($this->board[$row_i][$col_i] === 1) {
+                return false;
+            }
+            $row_i++;
+            $col_i--;
         }
 
         return true;
     }
 
-    public function find_solutions() {
-
+    public function find_solutions($row) {
+        for ($col=0; $col < $this->size; $col++) {
+            if ($this->valid($row, $col)) {
+                $this->board[$row][$col] = 1;
+                if ($row == 7) {
+                    $this->display_board();
+                } else {
+                    $this->find_solutions($row+1);
+                }
+                $this->board[$row][$col] = 0;
+            }
+        }
     }
 }
 
 $inst_Q = new QueensP();
-$inst_Q->find_solutions();
-$inst_Q->display_board();
+$inst_Q->find_solutions(0);
